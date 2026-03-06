@@ -1,0 +1,14 @@
+/* Glass effect for the sidebar */
+.sidebar-pane {
+  background-color: rgba(23, 27, 33, 0.7) !important;
+  backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Modern gradient for active links */
+[aria-current="page"] {
+  background: linear-gradient(90deg, #3b82f6, #9333ea) !important;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+}
