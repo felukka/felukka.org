@@ -4,10 +4,12 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'http://Felukka.org',
+	base: '/DOCs',
 	integrations: [
 		starlight({
-			title: 'Felucca',
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/felukka' }],
+			title: 'Felukkaa',
+			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/Felukka' }],
 			sidebar: [
 				{
 					label: 'Guides',
