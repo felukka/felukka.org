@@ -4,8 +4,8 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'http://Felukka.org',
-	base: '/DOCs',
+	site: 'https://felukka.org',
+	base: '/',
 	integrations: [
 		starlight({
 			title: 'Felukkaa',
