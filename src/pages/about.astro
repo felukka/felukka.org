@@ -1,0 +1,204 @@
+---
+import Layout from "../layouts/Layout.astro";
+import TeamMember from "../components/react/TeamMember.jsx";
+
+const team = [
+  {
+    name: "Mahmoud Farouk",
+    role: "Founder",
+    avatarColor: "#eac07d",
+    initials: "MF",
+    bio: "Founder of Felukka, building cloud-native tools that bring calm to chaos. Passionate about Kubernetes, observability, and developer experience.",
+    github: "https://github.com/mahmoudk1000",
+    twitter: "https://twitter.com",
+  },
+  {
+    name: "Mahmoud Beshay",
+    role: "Co-Founder",
+    avatarColor: "#b1c9e0",
+    initials: "MB",
+    bio: "Co-founder of Felukka, working on infrastructure tooling and distributed systems. Loves making complex things simple.",
+    github: "https://github.com/bluzzdev",
+    twitter: "https://twitter.com",
+  },
+];
+---
+
+<Layout title="Felukka">
+  <div class="flex flex-col w-full text-on-surface">
+    {/* Top Horizon Line */}
+    <div class="w-full h-0.5 bg-gradient-to-r from-tertiary-container via-primary to-transparent opacity-80" />
+
+    {/* About Header */}
+    <section class="relative w-full overflow-hidden bg-surface pt-28 pb-20 lg:pt-36 lg:pb-28">
+      <div class="pointer-events-none absolute -top-40 right-1/4 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
+      <div class="pointer-events-none absolute top-1/2 left-1/4 h-72 w-72 rounded-full bg-tertiary-container/20 blur-3xl" />
+
+      <div class="max-w-4xl mx-auto px-6 lg:px-12 relative z-10 text-center space-y-6">
+        {/* Label */}
+        <div class="flex items-center justify-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-primary" />
+          <span class="font-label text-xs uppercase tracking-widest text-primary font-semibold">Our Story</span>
+        </div>
+
+        <h1 class="font-headline font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-on-surface leading-[1.08]">
+          Meet the <span class="text-primary italic font-light">Bridge Crew.</span>
+        </h1>
+
+        <p class="font-body text-base sm:text-lg text-on-surface-variant leading-relaxed max-w-2xl mx-auto">
+          Felukka is built by a small, focused team of cloud-native engineers who are tired of watching operators drown in dashboard walls and YAML sprawl. We build tools that bring calm to chaos — because every cluster deserves a clear view of the stars.
+        </p>
+      </div>
+    </section>
+
+    {/* Mission Section */}
+    <section class="w-full bg-surface-container-lowest py-16 lg:py-24">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Pillar 1 */}
+          <div class="rounded-xl bg-surface-container-low p-8 space-y-4">
+            <div class="w-12 h-12 rounded-lg bg-primary-container/30 flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined text-2xl">lightbulb</span>
+            </div>
+            <h3 class="font-headline text-xl font-bold text-on-surface">Our Mission</h3>
+            <p class="text-sm text-on-surface-variant leading-relaxed">
+              To democratize Kubernetes operations by replacing cognitive overload with intuitive, nautical-inspired tooling that any operator can use confidently.
+            </p>
+          </div>
+
+          {/* Pillar 2 */}
+          <div class="rounded-xl bg-surface-container-low p-8 space-y-4">
+            <div class="w-12 h-12 rounded-lg bg-secondary-container flex items-center justify-center text-secondary">
+              <span class="material-symbols-outlined text-2xl">groups</span>
+            </div>
+            <h3 class="font-headline text-xl font-bold text-on-surface">Open Governance</h3>
+            <p class="text-sm text-on-surface-variant leading-relaxed">
+              We are Apache 2.0 licensed and community-driven. Decisions are made transparently, contributions are welcomed, and no single vendor controls the roadmap.
+            </p>
+          </div>
+
+          {/* Pillar 3 */}
+          <div class="rounded-xl bg-surface-container-low p-8 space-y-4">
+            <div class="w-12 h-12 rounded-lg bg-tertiary-container/30 flex items-center justify-center text-tertiary">
+              <span class="material-symbols-outlined text-2xl">speed</span>
+            </div>
+            <h3 class="font-headline text-xl font-bold text-on-surface">Performance First</h3>
+            <p class="text-sm text-on-surface-variant leading-relaxed">
+              Every tool we ship is built for speed — sub-millisecond operator loops, zero-JS telemetry renders, and minimal memory footprints that respect your cluster budget.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Team Section */}
+    <section class="w-full bg-surface py-16 lg:py-24">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12">
+        <div class="text-center mb-12 space-y-3">
+          <div class="flex items-center justify-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-primary" />
+            <span class="font-label text-xs uppercase tracking-widest text-primary font-semibold">Core Team</span>
+          </div>
+          <h2 class="font-headline text-3xl sm:text-4xl font-bold tracking-tight text-on-surface">
+            The People Behind the Fleet
+          </h2>
+          <p class="font-body text-sm text-on-surface-variant max-w-xl mx-auto">
+            A multidisciplinary team of engineers, designers, and community builders.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {team.map((member) => (
+            <TeamMember
+              name={member.name}
+              role={member.role}
+              avatarColor={member.avatarColor}
+              initials={member.initials}
+              bio={member.bio}
+              github={member.github}
+              twitter={member.twitter}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Contact Form Section */}
+    <section class="w-full bg-surface-container-lowest py-16 lg:py-24">
+      <div class="max-w-3xl mx-auto px-6 lg:px-12 space-y-8">
+        <div class="text-center space-y-3">
+          <div class="flex items-center justify-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-primary" />
+            <span class="font-label text-xs uppercase tracking-widest text-primary font-semibold">Get In Touch</span>
+          </div>
+          <h2 class="font-headline text-3xl sm:text-4xl font-bold tracking-tight text-on-surface">
+            Drop Us a Message
+          </h2>
+          <p class="font-body text-base text-on-surface-variant leading-relaxed max-w-xl mx-auto">
+            Questions, feedback, or just want to say hello? Fill out the form and we'll get back to you.
+          </p>
+        </div>
+
+        <form class="space-y-5" id="about-contact-form">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1.5">
+              <label class="font-label text-xs uppercase tracking-wider text-on-surface-variant block font-medium">Name *</label>
+              <input class="w-full px-3.5 py-2.5 rounded-md bg-surface-container text-on-surface font-body text-sm focus:outline-none focus:bg-surface-container-highest transition-colors placeholder:text-outline/50" placeholder="Your name" name="name" required type="text" />
+            </div>
+            <div class="space-y-1.5">
+              <label class="font-label text-xs uppercase tracking-wider text-on-surface-variant block font-medium">Email *</label>
+              <input class="w-full px-3.5 py-2.5 rounded-md bg-surface-container text-on-surface font-body text-sm focus:outline-none focus:bg-surface-container-highest transition-colors placeholder:text-outline/50" placeholder="you@example.com" name="email" required type="email" />
+            </div>
+          </div>
+          <div class="space-y-1.5">
+            <label class="font-label text-xs uppercase tracking-wider text-on-surface-variant block font-medium">Subject</label>
+            <input class="w-full px-3.5 py-2.5 rounded-md bg-surface-container text-on-surface font-body text-sm focus:outline-none focus:bg-surface-container-highest transition-colors placeholder:text-outline/50" placeholder="What's this about?" name="subject" type="text" />
+          </div>
+          <div class="space-y-1.5">
+            <label class="font-label text-xs uppercase tracking-wider text-on-surface-variant block font-medium">Message *</label>
+            <textarea class="w-full px-3.5 py-2.5 rounded-md bg-surface-container text-on-surface font-body text-sm focus:outline-none focus:bg-surface-container-highest transition-colors placeholder:text-outline/50" placeholder="Write your message here..." name="message" rows="5" required></textarea>
+          </div>
+          <button class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-md bg-primary hover:bg-primary-fixed-dim text-on-primary font-label text-xs uppercase tracking-wider font-bold transition-all shadow-[0_0_18px_rgba(234,192,125,0.25)]" type="submit">
+            <span class="material-symbols-outlined text-base">send</span>
+            <span>Send Message</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    {/* CTA Section */}
+    <section class="w-full bg-surface py-16 lg:py-24">
+      <div class="max-w-3xl mx-auto px-6 lg:px-12 text-center space-y-6">
+        <h2 class="font-headline text-3xl sm:text-4xl font-bold tracking-tight text-on-surface">
+          Want to Join the Crew?
+        </h2>
+        <p class="font-body text-base text-on-surface-variant leading-relaxed">
+          We are always looking for talented engineers, designers, and writers who share our passion for simplicity, performance, and open collaboration.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+          <a class="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-primary text-on-primary font-label text-sm uppercase tracking-wider font-semibold hover:bg-primary-fixed-dim transition-all shadow-[0_0_20px_rgba(234,192,125,0.25)]" href="https://github.com/felukka" rel="noreferrer" target="_blank">
+            <span class="material-symbols-outlined text-base">code</span>
+            <span>Contribute on GitHub</span>
+          </a>
+          <a class="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-surface-container-high hover:bg-surface-container-highest text-secondary hover:text-on-surface font-label text-sm uppercase tracking-wider transition-colors" href="https://discord.gg/Rzt9NM7RK5">
+            <span class="material-symbols-outlined text-base">forum</span>
+            <span>Join the Bridge</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  document.getElementById('about-contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var f = this;
+    var name = f.querySelector('[name=name]').value;
+    var email = f.querySelector('[name=email]').value;
+    var subject = f.querySelector('[name=subject]').value || 'Felukka Inquiry';
+    var msg = f.querySelector('[name=message]').value;
+    var body = 'Name: ' + name + '%0AEmail: ' + email + '%0A%0A' + msg;
+    window.location.href = 'mailto:mahmoudk1000@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + body;
+  });
+</script>

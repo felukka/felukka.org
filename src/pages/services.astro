@@ -1,0 +1,139 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ServicesHero from "../components/react/ServicesHero.jsx";
+import ServiceTier from "../components/react/ServiceTier.jsx";
+import WhySection from "../components/react/WhySection.jsx";
+import ContactForm from "../components/react/ContactForm.jsx";
+import DirectContact from "../components/react/DirectContact.jsx";
+import FAQSection from "../components/react/FAQSection.jsx";
+import FinalCTA from "../components/react/FinalCTA.jsx";
+
+const tiers = [
+  {
+    title: "Personal & Community",
+    price: "$0",
+    priceType: "/ Free Forever",
+    description:
+      "For individual developers, home-labs, student researchers, and hobbyist Kubernetes explorers.",
+    tagLabel: "OPEN SOURCE",
+    icon: "kayaking",
+    iconColor: "text-secondary",
+    features: [
+      "Apache 2.0 full source access for Koptan, Bosla & Kara",
+      "Public Helm chart repository & signed OCI registries",
+      "Community Discord bridge access & GitHub Discussions",
+      "Self-managed CRD upgrades and topology manifests",
+    ],
+    ctaLabel: "Deploy Community Helm",
+    ctaHref: "https://github.com/felukka",
+    ctaPrimary: false,
+  },
+  {
+    title: "Fleet Navigator",
+    price: "Subscription",
+    priceType: "/ Node Tier",
+    description:
+      "For teams and enterprises running revenue-generating workloads on Kubernetes demanding guaranteed reliability.",
+    badge: "RECOMMENDED FOR PRODUCTION",
+    badgeColor: "bg-primary text-on-primary",
+    tagLabel: "COMMERCIAL LICENSE",
+    tagColor: "bg-primary-container text-on-primary-container",
+    icon: "sailing",
+    iconColor: "text-primary",
+    features: [
+      "Commercial license & IP indemnification for corporate legal",
+      "Priority CVE backporting & embargoed security disclosures",
+      "99.95% Controller reconciliation SLA guarantee",
+      "Dedicated private Slack/Discord bridge (4h response target)",
+      "Automated drift-detection blueprints & cluster validation",
+    ],
+    iconType: "verified",
+    ctaLabel: "Request Commercial Quote",
+    ctaHref: "#connect-bridge",
+    ctaPrimary: true,
+  },
+  {
+    title: "Admiral Enterprise",
+    price: "Custom Agreement",
+    priceType: "",
+    description:
+      "For defense, fintech, and multi-cloud operators requiring custom controllers, air-gapped sovereign environments, and regulatory compliance.",
+    tagLabel: "AIR-GAPPED & BESPOKE",
+    tagColor: "bg-tertiary-container text-on-tertiary-container",
+    icon: "military_tech",
+    iconColor: "text-tertiary",
+    features: [
+      "15-minute emergency incident bridge (24/7/365 follow-the-sun)",
+      "Bespoke Go CRD & operator engineering for proprietary stacks",
+      "Air-gapped registry distribution & sovereign cluster hardening",
+      "SOC 2 Type II, ISO 27001, and HIPAA compliance mapping",
+    ],
+    iconType: "shield",
+    ctaLabel: "Schedule Architecture Briefing",
+    ctaHref: "#connect-bridge",
+    ctaPrimary: false,
+  },
+];
+---
+
+<Layout title="Felukka">
+  <main class="w-full pt-16 bg-surface flex-1">
+    <div class="flex flex-col w-full text-on-surface">
+      <ServicesHero />
+
+      <!-- Service Tiers -->
+      <section class="w-full bg-surface-container-lowest py-16 lg:py-24">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+          <div class="text-center max-w-2xl mx-auto mb-12 space-y-2">
+            <span class="font-label text-xs uppercase tracking-widest text-primary font-semibold">DISPATCH CHARTER</span>
+            <h2 class="font-headline text-2xl lg:text-3xl font-bold text-on-surface">Architectural Governance & Licensure</h2>
+            <p class="font-body text-sm text-on-surface-variant">Choose your tier. Scale transparently from home-lab clusters to global sovereign cloud meshes.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+            {tiers.map((tier) => (
+              <ServiceTier
+                key={tier.title}
+                title={tier.title}
+                price={tier.price}
+                priceType={tier.priceType}
+                description={tier.description}
+                badge={tier.badge}
+                badgeColor={tier.badgeColor}
+                tagLabel={tier.tagLabel}
+                tagColor={tier.tagColor}
+                icon={tier.icon}
+                iconColor={tier.iconColor}
+                features={tier.features}
+                iconType={tier.iconType}
+                ctaLabel={tier.ctaLabel}
+                ctaHref={tier.ctaHref}
+                ctaPrimary={tier.ctaPrimary}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <WhySection />
+      <ContactForm />
+      <DirectContact />
+      <FAQSection />
+      <FinalCTA />
+    </div>
+  </main>
+</Layout>
+
+<script>
+  document.getElementById('fleet-inquiry-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var f = this;
+    var name = f.querySelector('[name=name]').value;
+    var email = f.querySelector('[name=email]').value;
+    var organization = f.querySelector('[name=organization]').value;
+    var role = f.querySelector('[name=role]').value;
+    var msg = f.querySelector('[name=message]').value;
+    var subject = 'Fleet Inquiry from ' + name + (organization ? ' (' + organization + ')' : '');
+    var body = 'Name: ' + name + '%0AEmail: ' + email + '%0AOrganization: ' + organization + (role ? '%0ARole: ' + role : '') + '%0A%0AMessage:%0A' + msg;
+    window.location.href = 'mailto:mahmoudk1000@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + body;
+  });
+</script>

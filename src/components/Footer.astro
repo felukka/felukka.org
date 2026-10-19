@@ -1,6 +1,55 @@
 ---
-const year = new Date().getFullYear();
 ---
-<footer class="site-footer container">
-  <p>&copy; {year} Felukka. All rights reserved.</p>
+
+<footer class="w-full bg-surface-container-low pt-14 pb-10">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <!-- Top Grid -->
+    <div class="flex flex-col md:flex-row md:items-start justify-between gap-8 pb-10">
+      <!-- Brand Column -->
+      <div class="space-y-3 max-w-md">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-xl">sailing</span>
+          <span class="font-headline font-semibold text-sm tracking-wider uppercase text-on-surface">FELUKKA LABS</span>
+        </div>
+        <p class="text-xs text-on-surface-variant font-body leading-relaxed">
+          Citizen-grade cloud-native navigation for Kubernetes clusters. Autonomous telemetry orchestration, high-visibility operator controls, and transparent celestial telemetry.
+        </p>
+
+      </div>
+
+      <!-- Link Columns -->
+      <div class="flex flex-wrap gap-12">
+        <div class="flex flex-col space-y-2">
+          <span class="font-label text-xs font-semibold tracking-widest uppercase text-on-surface">Fleet Constellation</span>
+          <a class="text-xs text-on-surface-variant hover:text-on-surface transition-colors" data-path="fleet-projects" href="https://koptan.felukka.org">Koptan Operator</a>
+          <a class="text-xs text-on-surface-variant hover:text-on-surface transition-colors" data-path="fleet-projects" href="https://bosla.felukka.org">Bosla Mesh</a>
+          <a class="text-xs text-on-surface-variant hover:text-on-surface transition-colors" data-path="fleet-projects" href="https://kara.felukka.org">Kara Harbor</a>
+        </div>
+        <div class="flex flex-col space-y-2">
+          <span class="font-label text-xs font-semibold tracking-widest uppercase text-on-surface">Blog &amp; Dispatch</span>
+          <a class="text-xs text-on-surface-variant hover:text-on-surface transition-colors" data-path="logbook" href="/blog">Release Radar</a>
+          <a class="text-xs text-on-surface-variant hover:text-on-surface transition-colors" data-path="documentation" href="#">Architecture RFCs</a>
+          <a class="text-xs text-on-surface-variant hover:text-on-surface transition-colors" data-path="logbook" href="/blog">Blog RSS Feed</a>
+        </div>
+        <div class="flex flex-col space-y-2">
+          <span class="font-label text-xs font-semibold tracking-widest uppercase text-on-surface">Signal Transmit</span>
+          <a class="text-xs text-on-surface-variant hover:text-on-surface transition-colors" href="https://github.com/felukka" rel="noreferrer" target="_blank">GitHub Collective</a>
+          <a class="text-xs text-on-surface-variant hover:text-on-surface transition-colors" data-path="join-bridge" href="https://discord.gg/Rzt9NM7RK5">Bridge Discord</a>
+          <a class="text-xs text-on-surface-variant hover:text-on-surface transition-colors" href="/about">About Us</a>
+          <a class="text-xs text-on-surface-variant hover:text-on-surface transition-colors" href="https://github.com/felukka/governance" rel="noreferrer" target="_blank">Maintainer Charter</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-label text-on-surface-variant">
+      <div class="flex items-center gap-2">
+        <span>&copy; {new Date().getFullYear()} Felukka</span>
+      </div>
+      <div class="flex items-center gap-4 text-[11px] tracking-wide uppercase">
+        <a class="hover:text-on-surface transition-colors" href="#">Open Source License</a>
+        <a class="hover:text-on-surface transition-colors" data-path="about" href="#">Security Advisory</a>
+      </div>
+    </div>
+  </div>
 </footer>

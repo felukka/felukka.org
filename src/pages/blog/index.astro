@@ -1,0 +1,253 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import BlogCard from "../../components/react/BlogCard.jsx";
+import FeaturedPost from "../../components/react/FeaturedPost.jsx";
+import SubscribeNewsletter from "../../components/react/SubscribeNewsletter.jsx";
+import { writers } from "../../data/writers";
+
+// --- Data Fetching ---
+const allPosts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const PAGE_SIZE = 10;
+
+// Get current page from URL
+const url = new URL(Astro.url);
+const pageParam = url.searchParams.get("page");
+const currentPage = Math.max(1, parseInt(pageParam || "1", 10));
+const totalPages = Math.max(1, Math.ceil(allPosts.length / PAGE_SIZE));
+
+// Paginate posts
+const startIndex = (currentPage - 1) * PAGE_SIZE;
+const pagePosts = allPosts.slice(startIndex, startIndex + PAGE_SIZE);
+const featured = pagePosts[0];
+const rest = pagePosts.slice(1);
+
+// Collect all unique tags from all posts
+const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))].sort();
+
+// Featured article writer lookup
+const featuredWriterKey = featured.data.writer as keyof typeof writers;
+const featuredWriter = featuredWriterKey ? writers[featuredWriterKey] : null;
+// Read time helper
+const getReadTime = (description: string) => {
+  const words = description.split(" ").length;
+  return Math.max(1, Math.ceil(words / 200));
+};
+
+// SEO
+export function getSitemap() {
+  return allPosts.map((post) => ({
+    url: `/blog/${post.id}`,
+    lastModified: post.data.pubDate,
+  }));
+}
+---
+
+<Layout title="Felukka">
+  <div class="flex flex-col w-full text-on-surface">
+    {/* Blog Header */}
+    <section class="relative w-full overflow-hidden bg-surface pb-16 lg:pb-24">
+      <div class="pointer-events-none absolute -top-40 right-1/4 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
+      <div class="pointer-events-none absolute top-1/2 left-4 h-72 w-72 rounded-full bg-tertiary-container/30 blur-3xl" />
+
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 lg:pt-14 relative z-10">
+        {/* Main Headline */}
+        <div class="space-y-4 pb-10">
+          <h1 class="font-headline font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-on-surface leading-[1.08]">
+            The <span class="text-primary italic font-light">Blog</span>
+          </h1>
+          <p class="font-body text-base sm:text-lg text-secondary max-w-2xl leading-relaxed">
+            Engineering dispatches, navigational charts, and release logs from the Felukka core maintainers.
+          </p>
+        </div>
+
+        {/* Search & Filter Bar */}
+        <div class="p-3.5 rounded-xl bg-surface-container-low shadow-md space-y-3.5">
+          {/* Search Field */}
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl pointer-events-none">search</span>
+            <input
+              class="w-full pl-11 pr-4 py-2.5 bg-surface-container rounded-lg text-sm font-body text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-high transition-colors"
+              id="blog-search"
+              placeholder="Filter by title, tag, or keyword..."
+              type="text"
+            />
+          </div>
+
+          {/* Tags Filter */}
+          <div class="flex flex-wrap items-center gap-2" id="tag-filters">
+            <button
+              class="tag-filter active px-3 py-1.5 rounded-lg text-xs font-label font-semibold tracking-wider uppercase transition-all bg-primary text-on-primary whitespace-nowrap"
+              data-tag="all"
+            >
+              All Posts
+            </button>
+            {allTags.map((tag) => (
+              <button
+                class="tag-filter px-3 py-1.5 rounded-lg text-xs font-label font-medium tracking-wider uppercase transition-colors bg-surface-container hover:bg-surface-container-high text-secondary whitespace-nowrap"
+                data-tag={tag}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Featured Article - LATEST */}
+    {featured && (
+      <section class="w-full bg-surface-container-lowest py-10 lg:py-16">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+          <div class="flex items-center gap-2 mb-6">
+            <span class="material-symbols-outlined text-primary text-base">new_releases</span>
+            <span class="text-xs font-label font-semibold tracking-widest uppercase text-primary">LATEST</span>
+          </div>
+
+          <FeaturedPost
+            category={featured.data.category || "OBSERVABILITY"}
+            categoryBg="#1d3f5e"
+            categoryText="#a9c9ef"
+            date={featured.data.pubDate.toLocaleDateString("en-US", { month: "long", year: "numeric" }).toUpperCase()}
+            readTime={getReadTime(featured.data.description)}
+            title={featured.data.title}
+            summary={featured.data.description}
+            authorName={featuredWriter?.name || "Maintainer"}
+            authorRole={featuredWriter?.role || "Felukka Bridge Labs"}
+            authorInitial={featuredWriter?.avatar || "F"}
+            authorAvatarColor={featuredWriter?.avatarColor || "#eac07d"}
+            href={`/blog/${featured.id}`}
+          />
+        </div>
+      </section>
+    )}
+
+    {/* Post Grid */}
+    <section class="w-full bg-surface py-12 lg:py-20">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 space-y-8">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-label font-semibold tracking-widest uppercase text-secondary">ALL POSTS</span>
+          <span class="text-xs font-mono text-outline">{pagePosts.length} POST{pagePosts.length !== 1 ? 'S' : ''}</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" id="posts-grid">
+          {rest.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              category={post.data.category || "ARCHITECTURE"}
+              categoryBg="#1d3f5e"
+              categoryText="#a9c9ef"
+              pubDate={post.data.pubDate.toLocaleDateString("en-US", { month: "short", year: "numeric" }).toUpperCase()}
+              readTime={getReadTime(post.data.description)}
+              href={`/blog/${post.id}`}
+              tags={post.data.tags || []}
+              authorName="Maintainer"
+              authorInitial="M"
+              authorColor="#eac07d"
+            />
+          ))}
+        </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-label text-xs">
+            <span class="text-on-surface-variant font-mono">
+              PAGE {currentPage} OF {totalPages}
+            </span>
+            <div class="flex items-center gap-2">
+              {currentPage > 1 && (
+                <a
+                  class="px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-secondary transition-colors flex items-center gap-1"
+                  href={currentPage === 2 ? "/blog" : `/blog?page=${currentPage - 1}`}
+                >
+                  <span>Previous</span>
+                  <span class="material-symbols-outlined text-xs">arrow_back</span>
+                </a>
+              )}
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                <a
+                  class={`px-3 py-1.5 rounded-lg transition-colors ${
+                    pageNum === currentPage
+                      ? 'bg-primary text-on-primary font-semibold'
+                      : 'bg-surface-container hover:bg-surface-container-high text-secondary'
+                  }`}
+                  href={pageNum === 1 ? '/blog' : `/blog?page=${pageNum}`}
+                >
+                  {pageNum}
+                </a>
+              ))}
+
+              {currentPage < totalPages && (
+                <a
+                  class="px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-secondary transition-colors flex items-center gap-1"
+                  href={`/blog?page=${currentPage + 1}`}
+                >
+                  <span>Next</span>
+                  <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+
+    {/* Newsletter */}
+    <SubscribeNewsletter />
+
+    {/* Search & Filter Script */}
+    <script>
+      (function() {
+        const searchInput = document.getElementById('blog-search');
+        const cards = document.querySelectorAll('.dispatch-card');
+        const tagFilters = document.querySelectorAll('.tag-filter');
+        let activeTag = 'all';
+
+        // Tag filter selection
+        tagFilters.forEach(pill => {
+          pill.addEventListener('click', () => {
+            tagFilters.forEach(p => {
+              p.classList.remove('bg-primary', 'text-on-primary');
+              p.classList.add('bg-surface-container', 'text-secondary');
+            });
+            pill.classList.remove('bg-surface-container', 'text-secondary');
+            pill.classList.add('bg-primary', 'text-on-primary');
+            activeTag = pill.getAttribute('data-tag');
+            applyFilters();
+          });
+        });
+
+        // Apply both search and tag filters
+        function applyFilters() {
+          const query = (searchInput?.value || '').toLowerCase().trim();
+
+          cards.forEach(card => {
+            const content = card.textContent.toLowerCase();
+            const postTags = card.getAttribute('data-tags')?.toLowerCase().split(',').map(t => t.trim()) || [];
+
+            const matchesQuery = !query || content.includes(query);
+            const matchesTag = activeTag === 'all' || postTags.includes(activeTag.toLowerCase());
+
+            card.style.display = (matchesQuery && matchesTag) ? 'flex' : 'none';
+          });
+        }
+
+        // Search input handler
+        if (searchInput) {
+          searchInput.addEventListener('input', applyFilters);
+        }
+
+        // Store tags on each card for filtering
+        cards.forEach(card => {
+          const tags = card.getAttribute('data-tags') || '';
+          card.setAttribute('data-tags', tags);
+        });
+      })();
+    </script>
+  </div>
+</Layout>
