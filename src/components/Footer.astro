@@ -1,6 +1,57 @@
 ---
-const year = new Date().getFullYear();
 ---
-<footer class="site-footer container">
-  <p>&copy; {year} Felukka. All rights reserved.</p>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      
+      <!-- Brand Pillar -->
+      <div class="footer-brand">
+        <div class="brand-logo label text-on-surface">
+          <span class="material-symbols-outlined icon-medium" style="color: var(--primary);">sailing</span>
+          FELUKKA LABS
+        </div>
+        <p class="brand-desc">Citizen-grade cloud-native navigation for Kubernetes clusters. Autonomous telemetry orchestration, high-visibility operator controls, and transparent celestial telemetry.</p>
+        <div class="status-indicator label text-on-surface">
+          <span class="status-dot"></span> ALL SYSTEMS VISIBLE · ONLINE
+        </div>
+      </div>
+
+      <!-- Links Columns -->
+      <div class="footer-links">
+        <div class="link-column">
+          <span class="column-title label text-on-surface">FLEET CONSTELLATION</span>
+          <a href="#">Koptan Operator</a>
+          <a href="#">Minzar UI</a>
+          <a href="#">Helm Chart Hub</a>
+          <a href="#">CRD Blueprints</a>
+        </div>
+        <div class="link-column">
+          <span class="column-title label text-on-surface">BLOG & DISPATCH</span>
+          <a href="#">Release Radar</a>
+          <a href="#">The Manifesto</a>
+          <a href="#">Architecture RFCs</a>
+          <a href="#">Blog RSS Feed</a>
+        </div>
+        <div class="link-column">
+          <span class="column-title label text-on-surface">SIGNAL TRANSMIT</span>
+          <a href="#">GitHub Collective</a>
+          <a href="#">Bridge Discord</a>
+          <a href="#">Governance</a>
+          <a href="#">Maintainer Charter</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Copyright & Legal -->
+    <div class="footer-bottom">
+      <div class="tech-stack text-on-surface-variant">
+        <span class="copyright-text">© 2026 Felukka</span>
+      </div>
+      <div class="legal-links label text-on-surface-variant">
+        <a href="#">OPEN SOURCE LICENSE</a>
+        <a href="#">SECURITY ADVISORY</a>
+      </div>
+    </div>
+  </div>
 </footer>

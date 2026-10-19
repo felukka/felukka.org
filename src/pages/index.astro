@@ -1,51 +1,241 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog");
+const latestPosts = allPosts
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 ---
 
-<Layout 
-  title="Felukka" 
-  description="Kubernetes-native tools to build, deploy and run your apps straight from git."
->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Felukka</h1>
-      <p>Intelligent autonomous automation for the cloud-native and AI era.</p>
+<Layout title="Felukka">
+  <section class="hero-section">
+    <div class="container hero-content">
+      <h1 class="font-headline hero-title">
+        Navigating Kubernetes with <span class="text-gradient">Nautical Precision.</span>
+      </h1>
       
-      <div class="button-group">
-        <a href="https://koptan.felukka.org/getting-started/quickstart/" class="btn-primary">
-          Get started with Koptan <span>&rarr;</span>
+      <p class="hero-subtitle">
+        An open-source collective engineering citizen-grade infrastructure instruments. Translating Ops into calm.
+      </p>
+      
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary label">
+          <span class="material-symbols-outlined">explore</span> Projects
         </a>
-        <a href="https://github.com/felukka" class="btn-secondary">
-          GitHub 
-          <svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+        <a href="#manifesto" class="btn-secondary label">
+          Read The Manifesto <span class="material-symbols-outlined">north_east</span>
         </a>
       </div>
-    </div>
-    
-    <div class="hero-image">
-      <img src="/felukka.svg" alt="Felukka logo" />
+      
+      <!-- Live Bridge Coordinates Strip -->
+      <div class="stat-strip">
+        <div class="stat-item">
+          <span class="label text-outline">Governance</span>
+          <div class="stat-value">2 Flagships <span class="stat-sub">Deployed</span></div>
+          <span class="stat-desc">Koptan</span>
+        </div>
+        <div class="stat-item">
+          <span class="label text-outline">Autonomous</span>
+          <div class="stat-value" style="color: var(--secondary)">99.98% <span class="stat-sub" style="color: var(--secondary-fixed)">SLA Baseline</span></div>
+          <span class="stat-desc">Autonomous auto-reconcile loop</span>
+        </div>
+        <div class="stat-item">
+          <span class="label text-outline">Configuration Debt</span>
+          <div class="stat-value text-gradient">Zero-Toil <span class="stat-sub text-outline">YAML-Free</span></div>
+          <span class="stat-desc">Dynamic CRD auto-injection</span>
+        </div>
+        <div class="stat-item">
+          <span class="label text-outline">Governance Model</span>
+          <div class="stat-value">Open Bridge <span class="stat-sub" style="color: var(--primary)">Permissive</span></div>
+          <span class="stat-desc">Apache 2.0 · CNCF Aligned</span>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="products-section">
-    <h2>Products</h2>
-    
-    <div class="card-grid">
-      <a href="https://koptan.felukka.org" class="card-link">
-        <div class="card-header">
-          <h3>Koptan</h3>
-          <span class="arrow">&rarr;</span>
+  <!-- FLEET ECOSYSTEM SECTION -->
+  <section id="projects" class="projects-section">
+    <div class="container">
+      <div class="section-header flex-between align-end">
+        <div>
+          <div class="label flex-center" style="color: var(--primary); margin-bottom: 0.5rem;">
+            <span class="dot-small" style="background: var(--primary);"></span> Open-Source Instruments
+          </div>
+          <h2 class="font-headline section-title">FELUKKA ECOSYSTEM</h2>
+          <p class="section-subtitle">Citizen-grade cloud-native instruments crafted under the Felukka open-source umbrella. Autonomous operators, intelligent service mesh routing, and resilient state harbor backup working in concert.</p>
         </div>
-        <p>Koptan, your autonomous autopilot for your cluster.</p>
-      </a>
+        <div class="badge label text-secondary" style="background: var(--surface-container-high);">
+          <span style="color: var(--primary);">3</span> Flagships Active
+        </div>
+      </div>
 
-      <a href="https://github.com/felukka" class="card-link">
-        <div class="card-header">
-          <h3>GitHub</h3>
-          <span class="arrow">&rarr;</span>
+      <div class="grid-3">
+        <!-- CARD 1: KOPTAN -->
+        <div class="fleet-card">
+          <div class="card-header flex-between">
+            <div class="flex-center label text-outline">
+              <span class="icon-box" style="color: var(--primary); background: rgba(234, 192, 125, 0.1);">
+                <span class="material-symbols-outlined">sailing</span>
+              </span>
+              Autonomous Operator
+            </div>
+            <div class="badge label" style="color: var(--primary); background: var(--surface-container-high);">
+              <span class="status-dot"></span> v0.0.4 BETA
+            </div>
+          </div>
+          <div class="card-title-group">
+            <h3 class="font-headline card-title">KOPTAN <span class="label" style="color: var(--primary)">/ The Captain</span></h3>
+            <p class="label text-secondary card-motif">Single-Sided Collapsible Oar Motif</p>
+          </div>
+          <p class="card-desc">The autonomous Kubernetes cluster captain. Handles self-healing deployment reconciliation, automated pod lifecycle captaincy, and CRD management with zero YAML toil. Enforces deterministic immutable states during network partitions.</p>
+          <div class="code-block">
+            <div class="code-header flex-between label text-outline">
+              <span class="flex-center"><span class="dot-small" style="background: var(--primary);"></span> koptan.felukka.io/v1</span> <span style="color: var(--secondary)">Reconciled</span>
+            </div>
+            <div class="code-line prompt">$ kubectl get selfservice -A</div>
+            <div class="code-line output">helm-harbor-prod · 042.8° · 0.00% drift</div>
+          </div>
+          <div class="tag-group">
+            <span class="tag">Go / Operator SDK</span><span class="tag">Custom CRDs</span><span class="tag">backstage</span>
+          </div>
+          <div class="card-footer flex-between">
+            <a href="https://github.com/felukka/koptan" class="label flex-center link-primary">Source / GitHub <span class="material-symbols-outlined icon-small">arrow_forward</span></a>
+            <span class="label text-outline">CRD SPEC v1</span>
+          </div>
         </div>
-        <p>Source code for every Felukka project.</p>
-      </a>
+
+        <!-- CARD 2: BOSLA -->
+        <div class="fleet-card">
+          <div class="card-header flex-between">
+            <div class="flex-center label text-outline">
+              <span class="icon-box" style="color: var(--secondary); background: rgba(177, 201, 224, 0.1);">
+                <span class="material-symbols-outlined">explore</span>
+              </span>
+              Service Mesh & Ingress
+            </div>
+            <div class="badge label" style="color: var(--secondary); background: var(--surface-container-high);">
+              <span class="status-dot" style="background: var(--secondary);"></span> v0.9.4 PREVIEW
+            </div>
+          </div>
+          <div class="card-title-group">
+            <h3 class="font-headline card-title">BOSLA <span class="label" style="color: var(--secondary)">/ The Compass</span></h3>
+            <p class="label text-secondary card-motif">Waypointer & Traffic Astrolabe</p>
+          </div>
+          <p class="card-desc">Celestial traffic navigation and service mesh router across distributed clusters. Directs microservice requests with intelligent waypoint canary routing, seamless mutual TLS, and edge cluster ingress with zero-friction DNS management.</p>
+          <div class="code-block">
+            <div class="code-header flex-between label text-outline">
+              <span class="flex-center"><span class="dot-small" style="background: var(--secondary);"></span> bosla.felukka.io/v1beta</span> <span style="color: var(--primary)">Routing Steady</span>
+            </div>
+            <div class="code-line prompt">$ bosla mesh route --azimuth=090</div>
+            <div class="code-line output">traffic: 80% stable · 20% canary-v2</div>
+          </div>
+          <div class="tag-group">
+            <span class="tag">eBPF / Envoy</span><span class="tag">Canary Routing</span><span class="tag">mTLS Native</span>
+          </div>
+          <div class="card-footer flex-between">
+            <a href="https://github.com" class="label flex-center link-secondary">View Project / Docs <span class="material-symbols-outlined icon-small">open_in_new</span></a>
+            <span class="label text-outline">ROUTER v0.9</span>
+          </div>
+        </div>
+
+        <!-- CARD 3: KARA -->
+        <div class="fleet-card">
+          <div class="card-header flex-between">
+            <div class="flex-center label text-outline">
+              <span class="icon-box" style="color: var(--primary); background: rgba(234, 192, 125, 0.1);">
+                <span class="material-symbols-outlined">anchor</span>
+              </span>
+              State & Snapshot
+            </div>
+            <div class="badge label" style="color: var(--primary); background: var(--surface-container-high);">
+              <span class="status-dot"></span> v2.0.1 STABLE
+            </div>
+          </div>
+          <div class="card-title-group">
+            <h3 class="font-headline card-title">KARA <span class="label" style="color: var(--primary)">/ The Anchor</span></h3>
+            <p class="label text-secondary card-motif">Harbor Ledger & Immutable Store</p>
+          </div>
+          <p class="card-desc">The harbor bedrock securing persistent volume storage and state resilience. Guarantees deterministic cluster snapshotting, seamless disaster recovery, and cryptographically verified state ledgers across cloud and bare-metal harbors.</p>
+          <div class="code-block">
+            <div class="code-header flex-between label text-outline">
+              <span class="flex-center"><span class="dot-small" style="background: var(--primary);"></span> kara.felukka.io/v1</span> <span style="color: var(--secondary)">Snapshot Sync</span>
+            </div>
+            <div class="code-line prompt">$ kara harbor snap --immutable</div>
+            <div class="code-line output">pvc-ledger-snap-084 [SHA-256 OK]</div>
+          </div>
+          <div class="tag-group">
+            <span class="tag">CSI Plugin</span><span class="tag">Immutable Snapshots</span><span class="tag">Disaster Recovery</span>
+          </div>
+          <div class="card-footer flex-between">
+            <a href="https://github.com" class="label flex-center link-primary">Explore Ledger <span class="material-symbols-outlined icon-small">arrow_forward</span></a>
+            <span class="label text-outline">CSI SPEC v2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LATEST BLOG POSTS SECTION -->
+  <section class="blog-section">
+    <div class="container">
+      <div class="section-header flex-between align-end">
+        <div>
+          <div class="label flex-center" style="color: var(--primary); margin-bottom: 0.5rem;">
+            <span class="dot-small" style="background: var(--primary);"></span> Signal Dispatches
+          </div>
+          <h2 class="font-headline section-title">BLOG</h2>
+          <p class="section-subtitle">Engineering dispatches, navigational charts, and release logs from our core maintainers.</p>
+        </div>
+        <a href="/blog" class="label flex-center link-secondary">
+          Browse All Dispatches <span class="material-symbols-outlined icon-small">arrow_forward</span>
+        </a>
+      </div>
+
+      <div class="grid-3">
+        {latestPosts.map(post => (
+          <article class="fleet-card post-card">
+            <div class="post-meta flex-between label text-outline">
+              <span>{post.data.pubDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>
+            </div>
+            <h3 class="font-headline post-title"><a href={`/blog/${post.slug}`}>{post.data.title}</a></h3>
+            <p class="card-desc post-desc">{post.data.description}</p>
+            <div class="card-footer flex-between label text-on-surface-variant">
+              <span class="flex-center">
+                <span class="material-symbols-outlined icon-small text-outline">arrow_forward</span>
+              </span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- READY TO EMBARK CTA SECTION -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-box">
+        <div class="cta-content">
+          <div class="badge label" style="color: var(--primary); background: var(--surface-container-high); margin-bottom: 1rem;">
+            <span class="material-symbols-outlined icon-small">sailing</span> Open Source Collective
+          </div>
+          <h2 class="font-headline section-title">Ready to Embark?</h2>
+          <p class="section-subtitle">Whether you are piloting five microservices or commanding thousands of high-velocity nodes across continents, the Felukka constellation is built for you.</p>
+          <div class="cta-features label text-outline">
+            <span class="flex-center"><span class="material-symbols-outlined icon-small" style="color: var(--primary);">verified</span> Open Source</span>
+            <span class="flex-center"><span class="material-symbols-outlined icon-small" style="color: var(--primary);">lock_open</span> Secure</span>
+            <span class="flex-center"><span class="material-symbols-outlined icon-small" style="color: var(--primary);">group</span> Support</span>
+          </div>
+        </div>
+        <div class="cta-actions">
+          <a href="https://github.com/felukka" class="btn-primary label">
+            <span class="material-symbols-outlined">star</span> Follow us on GitHub
+          </a>
+          <a href="https://discord.gg/Rzt9NM7RK5" class="btn-secondary label" style="background: var(--surface-container-high); color: var(--on-surface-variant);">
+            <span class="material-symbols-outlined">forum</span> Join Discord Bridge
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 </Layout>

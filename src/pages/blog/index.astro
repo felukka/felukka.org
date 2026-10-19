@@ -1,0 +1,353 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import BlogCard from "../../components/react/BlogCard.jsx";
+import FeaturedPost from "../../components/react/FeaturedPost.jsx";
+import TelemetryPill from "../../components/react/TelemetryPill.jsx";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const featured = posts[0];
+const rest = posts.slice(1);
+
+// Calculate read time based on word count (approximate)
+const getReadTime = (description) => {
+  const words = description.split(" ").length;
+  const readTime = Math.max(1, Math.ceil(words / 200));
+  return readTime;
+};
+---
+
+<Layout title="Celestial Logbook · Felukka">
+  <div class="flex flex-col w-full text-on-surface">
+    {/* Atmospheric Glow & Celestial Header Canvas */}
+    <section class="relative w-full overflow-hidden bg-surface pb-16 lg:pb-24">
+      {/* Ambient Radial Lighting (Console Beacons) */}
+      <div class="pointer-events-none absolute -top-40 right-1/4 h-96 w-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="pointer-events-none absolute top-1/2 left-4 h-72 w-72 rounded-full bg-tertiary-container/30 blur-3xl"></div>
+      
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-8 lg:pt-14 relative z-10">
+        {/* Breadcrumb / System Coordinates */}
+        <div class="flex items-center gap-3 text-xs font-label text-secondary mb-6">
+          <span class="inline-flex items-center gap-1.5 uppercase tracking-widest text-[11px] text-primary">
+            <span class="h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></span>
+            SIGNAL DISPATCHES & ARCHIVE
+          </span>
+          <span class="text-outline-variant/40">/</span>
+          <span class="text-on-surface-variant font-mono tracking-wider">SECTOR: 28.4°N // 34.2°E</span>
+          <span class="hidden sm:inline text-outline-variant/40">/</span>
+          <span class="hidden sm:inline text-secondary font-mono">ASTRO_SYS_V2.4</span>
+        </div>
+
+        {/* Main Headline + Asymmetric Grid */}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end pb-12">
+          <div class="lg:col-span-8 space-y-4">
+            <h1 class="font-headline font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-on-surface leading-[1.08]">
+              The Celestial <span class="text-primary italic font-light">Logbook.</span>
+            </h1>
+            <p class="font-body text-base sm:text-lg text-secondary max-w-2xl leading-relaxed">
+              Engineering dispatches, navigational charts, and release logs from the Felukka core maintainers. Built on citizen-grade clarity and calm telemetry.
+            </p>
+          </div>
+          
+          {/* Telemetry Pill Indicators */}
+          <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end">
+            <TelemetryPill
+              icon="satellite_alt"
+              label="Fleet Status"
+              value="36 Nodes Synchronized"
+              badge="99.98% OK"
+            />
+            <TelemetryPill
+              icon="conversion_path"
+              label="Channel RSS"
+              value="Atom 1.0 & JSONFeed"
+              isLink={true}
+              linkText="Sync"
+              linkHref="#subscribe"
+              isTertiary={true}
+            />
+          </div>
+        </div>
+
+        {/* Search & Category Navigation Bar */}
+        <div class="mt-4 p-2.5 sm:p-3.5 rounded-xl bg-surface-container-low shadow-md space-y-3.5">
+          <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3">
+            {/* Search Field */}
+            <div class="relative flex-1">
+              <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl pointer-events-none">search</span>
+              <input
+                class="w-full pl-11 pr-4 py-2.5 bg-surface-container rounded-lg text-sm font-body text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-high transition-colors"
+                id="logbook-search"
+                placeholder="Filter dispatches by title, tag, or author..."
+                type="text"
+              />
+              <span class="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-surface-container-highest text-on-surface-variant">
+                ⌘K
+              </span>
+            </div>
+            {/* Total Count Badge */}
+            <div class="hidden lg:flex items-center gap-2 px-3.5 py-2 rounded-lg bg-surface-container text-xs font-label text-secondary">
+              <span class="h-2 w-2 rounded-full bg-primary"></span>
+              <span>INDEXED: <strong class="text-on-surface font-semibold">{posts.length} DISPATCHES</strong></span>
+            </div>
+          </div>
+
+          {/* Filter Pills List */}
+          <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none" id="category-pills">
+            <button class="dispatch-filter active px-3.5 py-1.5 rounded-lg text-xs font-label font-semibold tracking-wider uppercase transition-all bg-primary text-on-primary shadow-[0_0_12px_rgba(234,192,125,0.25)] whitespace-nowrap" data-filter="all">
+              All Dispatches ({posts.length})
+            </button>
+            <button class="dispatch-filter px-3.5 py-1.5 rounded-lg text-xs font-label font-medium tracking-wider uppercase transition-colors bg-surface-container hover:bg-surface-container-high text-secondary hover:text-on-surface whitespace-nowrap" data-filter="observability">
+              Observability
+            </button>
+            <button class="dispatch-filter px-3.5 py-1.5 rounded-lg text-xs font-label font-medium tracking-wider uppercase transition-colors bg-surface-container hover:bg-surface-container-high text-secondary hover:text-on-surface whitespace-nowrap" data-filter="operators">
+              Operators & CRDs
+            </button>
+            <button class="dispatch-filter px-3.5 py-1.5 rounded-lg text-xs font-label font-medium tracking-wider uppercase transition-colors bg-surface-container hover:bg-surface-container-high text-secondary hover:text-on-surface whitespace-nowrap" data-filter="mesh">
+              Service Mesh
+            </button>
+            <button class="dispatch-filter px-3.5 py-1.5 rounded-lg text-xs font-label font-medium tracking-wider uppercase transition-colors bg-surface-container hover:bg-surface-container-high text-secondary hover:text-on-surface whitespace-nowrap" data-filter="state">
+              State & Harbor
+            </button>
+            <button class="dispatch-filter px-3.5 py-1.5 rounded-lg text-xs font-label font-medium tracking-wider uppercase transition-colors bg-surface-container hover:bg-surface-container-high text-secondary hover:text-on-surface whitespace-nowrap" data-filter="architecture">
+              Architecture
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Featured Lead Article */}
+    {featured && (
+      <section class="w-full bg-surface-container-lowest py-10 lg:py-16">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+          {/* Section Marker */}
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-base">drive_file_rename_outline</span>
+              <span class="text-xs font-label font-semibold tracking-widest uppercase text-primary">FEATURED FLAGSHIP LOG</span>
+            </div>
+            <span class="text-xs font-mono text-outline uppercase tracking-wider hidden sm:inline">CRD SPEC // OPERATOR DISPATCH</span>
+          </div>
+          
+          <FeaturedPost
+            category={featured.data.category || "OBSERVABILITY"}
+            date={featured.data.pubDate.toLocaleDateString("en-US", { month: "long", year: "numeric" }).toUpperCase()}
+            readTime={getReadTime(featured.data.description)}
+            title={featured.data.title}
+            summary={featured.data.description}
+            author="Tariq S."
+            authorRole="Core Bridge Lead · Sukkan Collective"
+            slug={featured.id}
+          />
+        </div>
+      </section>
+    )}
+
+    {/* Main Technical Articles Archive */}
+    <section class="w-full bg-surface py-12 lg:py-20">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 space-y-8">
+        {/* Section Title & Sort Indicator */}
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2">
+          <div>
+            <span class="text-xs font-label font-semibold tracking-widest uppercase text-secondary">CURATED RADAR</span>
+            <h3 class="font-headline font-bold text-2xl sm:text-3xl text-on-surface mt-1">Recent Technical Dispatches</h3>
+          </div>
+          <div class="flex items-center gap-3 text-xs font-label text-on-surface-variant">
+            <span>Sort by:</span>
+            <button class="flex items-center gap-1 font-semibold text-primary hover:text-primary-fixed-dim transition-colors">
+              <span>Chronological</span>
+              <span class="material-symbols-outlined text-sm">unfold_more</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Responsive Grid */}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" id="articles-grid">
+          {rest.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              slug={post.id}
+              category={post.data.category || "ARCHITECTURE"}
+              readTime={getReadTime(post.data.description)}
+            />
+          ))}
+        </div>
+
+        {/* Pagination */}
+        <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-label text-xs">
+          <span class="text-on-surface-variant font-mono">DISPLAYING {posts.length} OF {posts.length} LOGS · PAGE 01</span>
+          <div class="flex items-center gap-2">
+            <button class="px-3.5 py-1.5 rounded-lg bg-surface-container text-on-surface-variant opacity-50 cursor-not-allowed">
+              Previous Log
+            </button>
+            <button class="px-3 py-1.5 rounded-lg bg-primary text-on-primary font-semibold">1</button>
+            <button class="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-secondary transition-colors">2</button>
+            <button class="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-secondary transition-colors">3</button>
+            <button class="px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors flex items-center gap-1">
+              <span>Next Log</span>
+              <span class="material-symbols-outlined text-xs">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Newsletter & RSS Subscription */}
+    <section class="w-full bg-surface-container-low py-16 lg:py-24 relative overflow-hidden" id="subscribe">
+      {/* Atmospheric Ambient Ring */}
+      <div class="pointer-events-none absolute -bottom-24 -left-20 h-96 w-96 rounded-full bg-primary/5 blur-3xl"></div>
+      
+      <div class="max-w-5xl mx-auto px-6 lg:px-12 relative z-10">
+        <div class="rounded-2xl bg-surface-container-lowest p-8 sm:p-12 shadow-2xl relative overflow-hidden">
+          {/* Celestial Console Header Decoration */}
+          <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b-0">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-primary text-2xl">sensors</span>
+              <div>
+                <div class="text-[10px] font-label uppercase tracking-widest text-primary font-bold">FREQUENCY CARRIER: 104.2 MHz</div>
+                <h3 class="font-headline font-bold text-2xl sm:text-3xl text-on-surface">
+                  Receive Celestial Dispatches in Your Terminal or Inbox
+                </h3>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 font-mono text-[11px] text-secondary">
+              <span class="h-2 w-2 rounded-full bg-primary animate-ping"></span>
+              <span>BEACON LISTENING</span>
+            </div>
+          </div>
+          <p class="font-body text-secondary text-sm sm:text-base leading-relaxed max-w-2xl mb-8">
+            No spam, no vendor pitches. Only architectural deep dives, zero-downtime operator playbooks, and release logs delivered every two weeks.
+          </p>
+          {/* Form Console Area */}
+          <form class="space-y-4" onsubmit="event.preventDefault(); document.getElementById('sub-success').classList.remove('hidden');">
+            <div class="flex flex-col sm:flex-row gap-3">
+              <div class="relative flex-1">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-lg">alternate_email</span>
+                <input class="w-full pl-11 pr-4 py-3 bg-surface-container rounded-lg font-mono text-xs sm:text-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-high transition-colors" placeholder="sre-bridge@organization.internal" required type="email"/>
+              </div>
+              <button class="px-6 py-3 rounded-lg bg-primary text-on-primary font-label text-xs sm:text-sm uppercase tracking-wider font-semibold hover:bg-primary-fixed-dim transition-all shadow-[0_0_16px_rgba(234,192,125,0.3)] flex items-center justify-center gap-2 whitespace-nowrap" type="submit">
+                <span class="material-symbols-outlined text-lg">cell_tower</span>
+                <span>Subscribe to Dispatch</span>
+              </button>
+            </div>
+            {/* Quick Terminal CURL snippet */}
+            <div class="p-3 rounded-lg bg-surface-container flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono text-on-surface-variant">
+              <div class="flex items-center gap-2 truncate">
+                <span class="text-primary font-bold">$</span>
+                <span class="truncate">curl -sSL https://sukkan.dev/dispatch/feed.xml | koptan-stream</span>
+              </div>
+              <button class="hover:text-primary transition-colors text-[11px] uppercase tracking-wider flex items-center gap-1 self-start sm:self-auto" onclick="navigator.clipboard.writeText('curl -sSL https://sukkan.dev/dispatch/feed.xml | koptan-stream'); alert('Copied to clipboard');" type="button">
+                <span class="material-symbols-outlined text-xs">content_copy</span>
+                <span>Copy</span>
+              </button>
+            </div>
+            {/* Success Alert Placeholder */}
+            <div class="hidden p-3 rounded-lg bg-tertiary-container/30 text-tertiary text-xs font-label flex items-center gap-2" id="sub-success">
+              <span class="material-symbols-outlined text-base">check_circle</span>
+              <span>Signal carrier subscribed. A verification ping has been routed to your inbox.</span>
+            </div>
+          </form>
+          {/* Protocol Flags Footer */}
+          <div class="pt-6 mt-6 flex flex-wrap items-center justify-between gap-4 text-[11px] font-label text-on-surface-variant">
+            <div class="flex items-center gap-4">
+              <a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+                <span class="material-symbols-outlined text-xs">rss_feed</span> RSS 2.0 Feed
+              </a>
+              <a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+                <span class="material-symbols-outlined text-xs">code</span> JSON Feed Specs
+              </a>
+              <a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+                <span class="material-symbols-outlined text-xs">lock</span> PGP Key 0x489C
+              </a>
+            </div>
+            <span class="font-mono text-outline">LATENCY // 18ms EU-CENTRAL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Interactive Search / Filter Micro-Script */}
+    <script>
+      (function() {
+        const searchInput = document.getElementById('logbook-search');
+        const cards = document.querySelectorAll('.dispatch-card');
+        const filterPills = document.querySelectorAll('.dispatch-filter');
+
+        // Filter Pill Selection
+        filterPills.forEach(pill => {
+          pill.addEventListener('click', () => {
+            filterPills.forEach(p => {
+              p.classList.remove('bg-primary', 'text-on-primary', 'shadow-[0_0_12px_rgba(234,192,125,0.25)]');
+              p.classList.add('bg-surface-container', 'text-secondary');
+            });
+            pill.classList.remove('bg-surface-container', 'text-secondary');
+            pill.classList.add('bg-primary', 'text-on-primary', 'shadow-[0_0_12px_rgba(234,192,125,0.25)]');
+
+            const category = pill.getAttribute('data-filter');
+            cards.forEach(card => {
+              if (category === 'all') {
+                card.style.display = 'flex';
+              } else {
+                const cardText = card.textContent.toLowerCase();
+                if (cardText.includes(category)) {
+                  card.style.display = 'flex';
+                } else {
+                  card.style.display = 'none';
+                }
+              }
+            });
+          });
+        });
+
+        // Quick Search Filter
+        if (searchInput) {
+          searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            cards.forEach(card => {
+              const content = card.textContent.toLowerCase();
+              if (content.includes(query)) {
+                card.style.display = 'flex';
+              } else {
+                card.style.display = 'none';
+              }
+            });
+          });
+        }
+      })();
+    </script>
+  </div>
+</Layout>
+
+<style>
+  /* Animation for pulse */
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .animate-pulse {
+    animation: pulse 2s infinite;
+  }
+  
+  /* Line clamp utility */
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  /* Scrollbar hide utility */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+</style>

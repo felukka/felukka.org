@@ -1,0 +1,113 @@
+---
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import BlogPost from "../../layouts/BlogPost.astro";
+
+export async function getStaticPaths() {
+	const posts = await getCollection("blog");
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: post,
+	}));
+}
+type Props = CollectionEntry<"blog">;
+
+const post = Astro.props;
+const { Content, headings } = await render(post);
+
+// Only keep h2 and h3 headings for the ToC
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+<BlogPost {...post.data}>
+	<div class="post-layout">
+		{tocHeadings.length > 0 && (
+			<nav class="toc" aria-label="Table of contents">
+				<div class="bg-surface-container-low p-5 rounded-lg space-y-4">
+					<div class="flex items-center justify-between">
+						<span class="font-label text-xs font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+							<span class="material-symbols-outlined text-base">explore</span>
+							On This Page
+						</span>
+						<span class="text-[10px] font-label text-outline uppercase tracking-wider">{tocHeadings.length} STOPS</span>
+					</div>
+					<nav class="flex flex-col space-y-1.5 font-label text-xs" id="tocNav">
+						{tocHeadings.map((heading) => (
+							<a class="toc-item flex items-center justify-between px-3 py-2 rounded bg-surface-container-high text-primary font-semibold transition-all" href={`#${heading.slug}`}>
+								<span class="truncate">{heading.text}</span>
+								{heading.depth === 2 && <span class="material-symbols-outlined text-xs">arrow_right</span>}
+							</a>
+						))}
+					</nav>
+				</div>
+				
+				{/* System Coordinates Stamp */}
+				<div class="bg-surface-container-low p-5 rounded-lg flex flex-col gap-3 relative overflow-hidden">
+					<div class="p-4 rounded-lg bg-surface-container-lowest/80 text-[11px] font-label text-on-surface-variant space-y-1.5">
+						<div class="flex justify-between">
+							<span class="text-outline">COMPASS BEARING:</span>
+							<span class="text-secondary font-mono">312° NW CLUSTER</span>
+						</div>
+						<div class="flex justify-between">
+							<span class="text-outline">OPERATOR CRD:</span>
+							<span class="text-primary font-mono">v1beta1/topology</span>
+						</div>
+						<div class="flex justify-between">
+							<span class="text-outline">ASTRO ISLANDS:</span>
+							<span class="text-tertiary font-mono">3 SSR / 0 HYDRATE</span>
+						</div>
+					</div>
+				</div>
+			</nav>
+		)}
+		<div class="post-content">
+			<Content />
+		</div>
+	</div>
+</BlogPost>
+
+<style>
+	.post-layout {
+		display: flex;
+		gap: 3rem;
+		align-items: flex-start;
+		padding: 2rem 0;
+		max-width: 80rem;
+		margin: 0 auto;
+	}
+	.toc {
+		position: sticky;
+		top: 6rem;
+		width: 280px;
+		flex-shrink: 0;
+		gap: 1rem;
+	}
+	.toc-item a {
+		display: block;
+		padding: 0.25rem 0;
+		color: var(--on-surface-variant);
+		text-decoration: none;
+		transition: color 0.15s ease;
+		line-height: 1.4;
+		cursor: pointer;
+	}
+	.toc-item a:hover {
+		color: var(--primary);
+	}
+	.toc-item a.active {
+		color: var(--primary);
+		font-weight: 600;
+	}
+	.post-content {
+		flex: 1;
+		min-width: 0;
+		max-width: 65ch;
+	}
+	@media (max-width: 1024px) {
+		.toc {
+			display: none;
+		}
+		.post-layout {
+			flex-direction: column;
+		}
+	}
+</style>

@@ -1,0 +1,38 @@
+---
+import Layout from "./Layout.astro";
+import PostHeader from "../components/react/PostHeader.jsx";
+import type { CollectionEntry } from "astro:content";
+
+const { title, description, pubDate, updatedDate, category = "OBSERVABILITY" } =
+  Astro.props as unknown as CollectionEntry<"blog">["data"];
+
+const formattedDate = pubDate.toLocaleDateString("en-US", {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+});
+
+const readTime = Math.max(1, Math.ceil(description.split(" ").length / 200));
+---
+
+<Layout title={`${title} · Felukka`}>
+  <div class="flex flex-col w-full text-on-surface">
+    {/* Top Atmospheric Horizon Line */}
+    <div class="w-full h-0.5 bg-gradient-to-r from-tertiary-container via-primary to-transparent opacity-80"></div>
+    
+    {/* Editorial Masthead / Header Section */}
+    <PostHeader
+      category={category}
+      date={formattedDate}
+      readTime={readTime}
+      title={title}
+      subtitle={description}
+      author="Tariq S."
+      authorRole="Felukka Bridge Labs · Architecture Council"
+      authorBadge="Maintainer"
+    />
+    
+    {/* Main Content */}
+    <slot />
+  </div>
+</Layout>
